@@ -129,15 +129,18 @@
   <ItemGroup>
     <ClCompile Include="kiwer_api.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MockStockTrader.cpp" />
+    <ClCompile Include="MockDriver.cpp" />
     <ClCompile Include="nemo_api.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IStockTrader.h" />
-    <ClInclude Include="MockStockTrader.h" />
+    <ClInclude Include="IStockBrockerDriver.h" />
+    <ClInclude Include="KiwerDriver.h" />
+    <ClInclude Include="MockDriver.h" />
+    <ClInclude Include="NemoDriver.h" />
+    <ClInclude Include="StockBrockerInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
