@@ -7,6 +7,18 @@ IStockTrader *selectStockerBrocker(const string &driver) {
   if (driver == "Nemo") return new NemoDriver();
   return nullptr;
 }
+class SbdInterface : public IStockTrader {
+
+public:
+    bool LogIn(const std::string& id, const std::string& pass) override {
+        if (id != "admin")
+            return false;
+        if (pass != "1234")
+            return false;
+        return true;
+    }
+
+};
 
 TEST(Basic, SelectSBKiwer) {
   IStockTrader *stockTrader = selectStockerBrocker("Kiwer");
@@ -14,13 +26,22 @@ TEST(Basic, SelectSBKiwer) {
 }
 
 TEST(Basic, Login_Pass) {
-    EXPECT_EQ(true, SbdInterface().LogIn(id, password));
+    SbdInterface sb;
+    string id = "admin";
+    string password = "1234";
+    EXPECT_EQ(true, sb.LogIn(id, password));  // 
+
 }
 
 TEST(Basic, Login_Fail) {
-    EXPECT_EQ(false, SbdInterface().LogIn(id, password));  // wrong id
-    EXPECT_EQ(false, SbdInterface().LogIn(id, password));  // wrong password
+    SbdInterface sb;
+    string id = "aadmin";
+    string password = "1234";
+    EXPECT_EQ(false, sb.LogIn(id, password));  // wrong id
+    EXPECT_EQ(false, sb.LogIn(id, password));  // wrong password
 }
+
+
 
 TEST(Basic, BuySell) {
     std::string stockCode = 0;
