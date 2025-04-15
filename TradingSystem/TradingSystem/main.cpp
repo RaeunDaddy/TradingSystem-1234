@@ -1,4 +1,5 @@
 #include "IStockTrader.h"
+#include "MockStockTrader.h"
 #include "gmock/gmock.h"
 #include <string>
 
@@ -17,6 +18,7 @@ public:
             return false;
         return true;
     }
+
 
 };
 
@@ -44,20 +46,23 @@ TEST(Basic, Login_Fail) {
 TEST(Basic, Buy) {
     std::string stockCode = 0;
 
+    MockStockTrader mockStockTrader;
+
     // buy test
     int buyPrice = 100;
     int buyCount = 10;
-    EXPECT_EQ(true, SbdInterface().buyStock(stockCode, buyPrice, buyCount));
+    EXPECT_EQ(true, mockStockTrader.buyStock(stockCode, buyPrice, buyCount));
 }
 
 TEST(Basic, Sell) {
+    MockStockTrader mockStockTrader;
     std::string stockCode = 0;
 
     // sell test
     int sellPrice = 100;
     int sellCount = 5;
 
-    EXPECT_EQ(true, SbdInterface().sellStock(stockCode, sellPrice, sellCount));
+    EXPECT_EQ(true, mockStockTrader.sellStock(stockCode, sellPrice, sellCount));
 }
 
 TEST(Basic, CurrentPrice) {
