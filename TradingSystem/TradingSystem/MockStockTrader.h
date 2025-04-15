@@ -13,6 +13,6 @@ public:
 	bool buyStock(const string& stockCode, int buyingPrice, int quantity) override;
 	bool sellStock(const string& stockCode, int sellingPrice, int quantity) override;
 	void getStockPrice(const string& stockCode) override {}
-	string getType() {}
+	string getType() { return "Mock"; }
 };
 
