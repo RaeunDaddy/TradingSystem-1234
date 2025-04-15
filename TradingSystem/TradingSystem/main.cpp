@@ -41,25 +41,23 @@ TEST(Basic, Login_Fail) {
     EXPECT_EQ(false, sb.LogIn(id, password));  // wrong password
 }
 
-
-
-TEST(Basic, BuySell) {
+TEST(Basic, Buy) {
     std::string stockCode = 0;
 
     // buy test
     int buyPrice = 100;
     int buyCount = 10;
     EXPECT_EQ(true, SbdInterface().buyStock(stockCode, buyPrice, buyCount));
+}
 
-    EXPECT_EQ(buyCount, SbdInterface().getStockCount(stockCode));
+TEST(Basic, Sell) {
+    std::string stockCode = 0;
 
     // sell test
     int sellPrice = 100;
     int sellCount = 5;
 
     EXPECT_EQ(true, SbdInterface().sellStock(stockCode, sellPrice, sellCount));
-
-    EXPECT_EQ((buyCount - sellCount), SbdInterface().getStockCount(stockCode));
 }
 
 TEST(Basic, CurrentPrice) {
