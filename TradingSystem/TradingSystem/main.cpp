@@ -41,6 +41,12 @@ TEST(Basic, BuySell) {
     EXPECT_EQ((buyCount - sellCount), SbdInterface().getStockCount(stockCode));
 }
 
+TEST(Basic, CurrentPrice) {
+    std::string stockCode = 0;
+
+    EXPECT_THAT(SbdInterface().getStockPrice(stockCode), Gt(0));
+}
+
 int main() {
   ::testing::InitGoogleMock();
   return RUN_ALL_TESTS();
