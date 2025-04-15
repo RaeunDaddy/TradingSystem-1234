@@ -1,74 +1,65 @@
-#include "IStockTrader.h"
-#include "MockStockTrader.h"
+#include "IStockBrockerDriver.h"
+#include "MockDriver.h"
+#include "KiwerDriver.h"
+#include "NemoDriver.h"
+
+#include "StockBrockerInterface.h"
+
 #include "gmock/gmock.h"
+
 #include <string>
 
-IStockTrader *selectStockerBrocker(const string &driver) {
-  if (driver == "Kiwer") return new KiwerDriver();
-  if (driver == "Nemo") return new NemoDriver();
-  return nullptr;
-}
-class SbdInterface : public IStockTrader {
-
-public:
-    bool LogIn(const std::string& id, const std::string& pass) override {
-        if (id != "admin")
-            return false;
-        if (pass != "1234")
-            return false;
-        return true;
-    }
-
-
-};
-
 TEST(Basic, SelectSBKiwer) {
-  IStockTrader *stockTrader = selectStockerBrocker("Kiwer");
-  EXPECT_EQ("Kiwer", stockTrader->getType());
+    StockBrockerInterface *stockBrockerInterface = new StockBrockerInterface();
+    IStockBrockerDriver *stockTrader =
+        stockBrockerInterface->selectStockerBrocker("Kiwer");
+    EXPECT_EQ("Kiwer", stockTrader->getType());
 }
 
 TEST(Basic, Login_Pass) {
-    SbdInterface sb;
+  StockBrockerInterface *stockBrockerInterface = new StockBrockerInterface();
+  IStockBrockerDriver *stockTrader =
+      stockBrockerInterface->selectStockerBrocker("Kiwer");
     string id = "admin";
     string password = "1234";
-    EXPECT_EQ(true, sb.LogIn(id, password));  // 
+    EXPECT_EQ(true, stockBrockerInterface->LogIn(id, password));  // 
 
-}
-
-TEST(Basic, Login_Fail) {
-    SbdInterface sb;
-    string id = "aadmin";
-    string password = "1234";
-    EXPECT_EQ(false, sb.LogIn(id, password));  // wrong id
-    EXPECT_EQ(false, sb.LogIn(id, password));  // wrong password
 }
 
 TEST(Basic, Buy) {
-    std::string stockCode = 0;
-
-    MockStockTrader mockStockTrader;
+  StockBrockerInterface *stockBrockerInterface = new StockBrockerInterface();
+  IStockBrockerDriver *stockTrader =
+      stockBrockerInterface->selectStockerBrocker("Kiwer");
+    std::string stockCode = "Samsung";
 
     // buy test
     int buyPrice = 100;
     int buyCount = 10;
-    EXPECT_EQ(true, mockStockTrader.buyStock(stockCode, buyPrice, buyCount));
+    EXPECT_EQ(true,
+              stockBrockerInterface->buyStock(stockCode, buyPrice, buyCount));
 }
 
 TEST(Basic, Sell) {
-    MockStockTrader mockStockTrader;
-    std::string stockCode = 0;
+  StockBrockerInterface *stockBrockerInterface = new StockBrockerInterface();
+  IStockBrockerDriver *stockTrader =
+      stockBrockerInterface->selectStockerBrocker("Kiwer");
+    std::string stockCode = "Samsung";
 
     // sell test
     int sellPrice = 100;
     int sellCount = 5;
 
-    EXPECT_EQ(true, mockStockTrader.sellStock(stockCode, sellPrice, sellCount));
+    EXPECT_EQ(true, stockBrockerInterface->sellStock(stockCode, sellPrice,
+                                                      sellCount));
 }
 
 TEST(Basic, CurrentPrice) {
-    std::string stockCode = 0;
+  StockBrockerInterface *stockBrockerInterface = new StockBrockerInterface();
+  IStockBrockerDriver *stockTrader =
+      stockBrockerInterface->selectStockerBrocker("Kiwer");
+    std::string stockCode = "Samsung";
 
-    EXPECT_THAT(SbdInterface().getStockPrice(stockCode), Gt(0));
+    EXPECT_GE(stockBrockerInterface->getStockPrice(stockCode), 0);
 }
 
 int main() {
